@@ -1,6 +1,7 @@
 using System;
 using UnityEngine;
 using Zenject;
+using Zenject.Asteroids;
 
 namespace Plugins.Zenject.OptionalExtras.Scripts.Ship
 {
@@ -8,11 +9,13 @@ namespace Plugins.Zenject.OptionalExtras.Scripts.Ship
     {
         private Setting _settings;
         private Vector2 _direction;
+        BulletShotSignal _bulletShotSignal;
 
         [Inject]
-        public void Construct(Setting settings)
+        public void Construct(Setting settings, BulletShotSignal bulletShotSignal)
         {
             _settings = settings;
+            _bulletShotSignal = bulletShotSignal;
         }
 
         [Serializable]
@@ -26,6 +29,8 @@ namespace Plugins.Zenject.OptionalExtras.Scripts.Ship
         {
             transform.position = position;
             _direction = direction;
+            _bulletShotSignal.Fire();
+
         }
 
         private void FixedUpdate()

@@ -85,6 +85,7 @@ namespace Zenject.Asteroids
         void InstallShip()
         {
             Container.DeclareSignal<ShipCrashedSignal>();
+            Container.DeclareSignal<BulletShotSignal>();
 
             Container.BindInterfacesAndSelfTo<InputController>().AsSingle();
 

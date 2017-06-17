@@ -11,6 +11,9 @@ namespace Zenject.Asteroids
 
         ShipCrashedSignal _shipCrashedSignal;
 
+        [Inject]
+        BulletShotSignal _bulletShotSignal;
+
         public AudioHandler(
             AudioSource audioSource,
             Settings settings,
@@ -24,11 +27,13 @@ namespace Zenject.Asteroids
         public void Initialize()
         {
             _shipCrashedSignal += OnShipCrashed;
+            _bulletShotSignal += OnBulletShot;
         }
 
         public void Dispose()
         {
             _shipCrashedSignal -= OnShipCrashed;
+            _bulletShotSignal -= OnBulletShot;
         }
 
         void OnShipCrashed()
@@ -36,10 +41,15 @@ namespace Zenject.Asteroids
             _audioSource.PlayOneShot(_settings.CrashSound);
         }
 
+        void OnBulletShot() {
+            _audioSource.PlayOneShot(_settings.BulletShotSound);
+        }
+
         [Serializable]
         public class Settings
         {
             public AudioClip CrashSound;
+            public AudioClip BulletShotSound;
         }
     }
 }
