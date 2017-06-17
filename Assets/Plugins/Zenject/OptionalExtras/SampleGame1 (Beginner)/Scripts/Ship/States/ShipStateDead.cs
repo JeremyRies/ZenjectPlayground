@@ -1,6 +1,7 @@
 using System;
 using UnityEngine;
 using System.Collections;
+using Plugins.Zenject.OptionalExtras.Scripts.Ship;
 using Zenject;
 using Random=UnityEngine.Random;
 

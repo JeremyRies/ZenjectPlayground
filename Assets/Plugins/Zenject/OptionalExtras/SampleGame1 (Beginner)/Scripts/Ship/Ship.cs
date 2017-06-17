@@ -1,12 +1,13 @@
-using System;
-using System.Collections.Generic;
+using Plugins.Zenject.OptionalExtras.FFG;
+using UniRx;
 using UnityEngine;
-using System.Collections;
 using Zenject;
+using Zenject.Asteroids;
+using Zenject.SpaceFighter;
 
 #pragma warning disable 649
 
-namespace Zenject.Asteroids
+namespace Plugins.Zenject.OptionalExtras.Scripts.Ship
 {
     public class Ship : MonoBehaviour
     {
@@ -19,10 +20,22 @@ namespace Zenject.Asteroids
         ShipStateFactory _stateFactory;
         ShipState _state = null;
 
+        private InputController _inputController;
+        private Bullet.BulletFactory _bulletFactory;
+
         [Inject]
-        public void Construct(ShipStateFactory stateFactory)
+        public void Construct(ShipStateFactory stateFactory, InputController inputController, Bullet.BulletFactory bulletFactory)
         {
             _stateFactory = stateFactory;
+            _inputController = inputController;
+            _inputController.ShootCommand = new ReactiveCommand();
+            _bulletFactory = bulletFactory;
+
+            _inputController.ShootCommand.Subscribe(_ =>
+            {
+                var bullet = _bulletFactory.Create();
+                bullet.Shoot(transform.position, transform.rotation.eulerAngles);
+            });
         }
 
         public MeshRenderer MeshRenderer

@@ -4,6 +4,8 @@ using UnityEngine;
 using System.Collections;
 using Zenject;
 using System.Linq;
+using Plugins.Zenject.OptionalExtras.FFG;
+using Plugins.Zenject.OptionalExtras.Scripts.Ship;
 
 namespace Zenject.Asteroids
 {
@@ -84,10 +86,14 @@ namespace Zenject.Asteroids
         {
             Container.DeclareSignal<ShipCrashedSignal>();
 
+            Container.BindInterfacesAndSelfTo<InputController>().AsSingle();
+
             Container.Bind<ShipStateFactory>().AsSingle();
 
             // Note that the ship itself is bound using a ZenjectBinding component (see Ship
             // game object in scene heirarchy)
+
+            Container.BindFactory<Bullet, Bullet.BulletFactory>().FromComponentInNewPrefab(_settings.BulletPrefab);
 
             Container.BindFactory<ShipStateWaitingToStart, ShipStateWaitingToStart.Factory>().WhenInjectedInto<ShipStateFactory>();
             Container.BindFactory<ShipStateDead, ShipStateDead.Factory>().WhenInjectedInto<ShipStateFactory>();
@@ -114,6 +120,7 @@ namespace Zenject.Asteroids
             public GameObject BrokenShipPrefab;
             public GameObject AsteroidPrefab;
             public GameObject ShipPrefab;
+            public GameObject BulletPrefab;
         }
     }
 }

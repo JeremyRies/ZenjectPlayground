@@ -3,6 +3,7 @@ using UnityEngine;
 using System.Collections;
 using Zenject;
 using ModestTree;
+using Plugins.Zenject.OptionalExtras.Scripts.Ship;
 
 namespace Zenject.Asteroids
 {

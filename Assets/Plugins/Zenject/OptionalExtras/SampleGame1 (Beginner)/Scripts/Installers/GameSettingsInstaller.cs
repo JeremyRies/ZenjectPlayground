@@ -1,6 +1,7 @@
 using System;
 using UnityEngine;
 using System.Collections;
+using Plugins.Zenject.OptionalExtras.Scripts.Ship;
 using Zenject;
 
 namespace Zenject.Asteroids
@@ -20,13 +21,15 @@ namespace Zenject.Asteroids
     //    object composition root separately at runtime
     //
     // Uncomment if you want to add alternative game settings
-    //[CreateAssetMenu(menuName = "Asteroids/Game Settings")]
+    [CreateAssetMenu(menuName = "Asteroids/Game Settings")]
     public class GameSettingsInstaller : ScriptableObjectInstaller<GameSettingsInstaller>
     {
         public ShipSettings Ship;
         public AsteroidSettings Asteroid;
         public AudioHandler.Settings AudioHandler;
         public GameInstaller.Settings GameInstaller;
+
+        public Bullet.Setting BulletSetting;
 
         // We use nested classes here to group related settings together
         [Serializable]
@@ -53,6 +56,7 @@ namespace Zenject.Asteroids
             Container.BindInstance(Asteroid.General);
             Container.BindInstance(AudioHandler);
             Container.BindInstance(GameInstaller);
+            Container.BindInstance(BulletSetting);
         }
     }
 }
