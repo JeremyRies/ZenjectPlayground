@@ -1,3 +1,4 @@
+using System;
 using Plugins.Zenject.OptionalExtras.FFG;
 using UniRx;
 using UnityEngine;
@@ -21,20 +22,23 @@ namespace Plugins.Zenject.OptionalExtras.Scripts.Ship
         ShipState _state = null;
 
         private InputController _inputController;
-        private Bullet.BulletFactory _bulletFactory;
+        private Bullet.BulletPool _bulletPool;
 
         [Inject]
-        public void Construct(ShipStateFactory stateFactory, InputController inputController, Bullet.BulletFactory bulletFactory)
+        public void Construct(ShipStateFactory stateFactory, InputController inputController, Bullet.BulletPool bulletPool)
         {
             _stateFactory = stateFactory;
             _inputController = inputController;
             _inputController.ShootCommand = new ReactiveCommand();
-            _bulletFactory = bulletFactory;
+            _bulletPool = bulletPool;
 
             _inputController.ShootCommand.Subscribe(_ =>
             {
-                var bullet = _bulletFactory.Create();
-                bullet.Shoot(transform.position, transform.rotation.eulerAngles);
+                var bullet = _bulletPool.Spawn(transform.position, transform.rotation.eulerAngles);
+                Observable.Timer(TimeSpan.FromSeconds(1)).Subscribe(__ =>
+                {
+                    _bulletPool.Despawn(bullet);
+                });
             });
         }
 

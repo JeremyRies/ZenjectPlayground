@@ -48,7 +48,7 @@ namespace Zenject
             return item;
         }
 
-        protected virtual void Reinitialize(TParam1 p1, TParam2 p2, TValue item)
+        protected virtual void Reinitialize(TParam1 position, TParam2 direction, TValue item)
         {
             // Optional
         }

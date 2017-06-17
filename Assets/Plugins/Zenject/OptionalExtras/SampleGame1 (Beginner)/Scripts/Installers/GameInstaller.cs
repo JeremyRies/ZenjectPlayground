@@ -94,7 +94,10 @@ namespace Zenject.Asteroids
             // Note that the ship itself is bound using a ZenjectBinding component (see Ship
             // game object in scene heirarchy)
 
-            Container.BindFactory<Bullet, Bullet.BulletFactory>().FromComponentInNewPrefab(_settings.BulletPrefab);
+            Container.BindMemoryPool<Bullet, Bullet.BulletPool>()
+                .WithInitialSize(5)
+                .FromComponentInNewPrefab(_settings.BulletPrefab)
+                .UnderTransformGroup("Bullets");
 
             Container.BindFactory<ShipStateWaitingToStart, ShipStateWaitingToStart.Factory>().WhenInjectedInto<ShipStateFactory>();
             Container.BindFactory<ShipStateDead, ShipStateDead.Factory>().WhenInjectedInto<ShipStateFactory>();

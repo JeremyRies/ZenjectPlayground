@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using UnityEngine;
 using Zenject;
 using Zenject.Asteroids;
@@ -39,8 +40,12 @@ namespace Plugins.Zenject.OptionalExtras.Scripts.Ship
             transform.position = newPos;
         }
 
-        public class BulletFactory : Factory<Bullet>
+        public class BulletPool : MonoMemoryPool<Vector2, Vector2, Bullet>
         {
+            protected override void Reinitialize(Vector2 position, Vector2 direction, Bullet item)
+            {
+                item.Shoot(position, direction);
+            }
         }
     }
 }
